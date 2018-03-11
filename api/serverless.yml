@@ -11,9 +11,10 @@ provider:
   runtime: nodejs6.10
 
 functions:
-  hello:
-    handler: handler.hello
+  express:
+    handler: handler.express
     events:
-      - http:
-          method: get
-          path: api/hello
+     - http:
+         path: api/{proxy+}
+         method: any
+         cors: true

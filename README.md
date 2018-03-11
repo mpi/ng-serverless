@@ -142,3 +142,57 @@ In `web/package.json` add:
   "predeploy": "ng build --prod",
   "deploy": "serverless client deploy"
 ```
+
+## 6. Write Express-style endpoints:
+
+Run:
+```
+> cd api
+> npm install aws-serverless-express express --save
+>
+```
+
+In `serverless.yml` replace `hello` endpoint with:
+```
+  express:
+    handler: handler.express
+    events:
+     - http:
+         path: api/{proxy+}
+         method: any
+         cors: true
+```
+
+Create `app.ts`:
+```
+import * as express from 'express';
+import { eventContext } from 'aws-serverless-express/middleware';
+
+const app = express();
+app.use(eventContext());
+app.get('/api/hello', (req, res) => {
+  const event = (req as any).apiGateway.event;
+  res.json({
+    message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully!',
+    input: event
+  });
+});
+
+export default app;
+```
+
+Replace `handler.ts` with:
+```
+import { APIGatewayEvent, Callback, Context, Handler } from 'aws-lambda';
+
+import * as awsServerlessExpress from 'aws-serverless-express';
+import app from './app';
+
+const server = awsServerlessExpress.createServer(app);
+export const express = (event: APIGatewayEvent, context: Context, cb: Callback) => awsServerlessExpress.proxy(server, event, context);
+```
+
+Run
+```
+> npm run local
+```
