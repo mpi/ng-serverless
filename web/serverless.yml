@@ -1,0 +1,13 @@
+service: ng-serverless
+
+plugins:
+  - serverless-finch
+
+provider:
+  name: aws
+  region: eu-central-1
+
+custom:
+  client:
+    bucketName: ng-serverless
+    distributionFolder: ./dist

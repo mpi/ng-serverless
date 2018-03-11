@@ -68,3 +68,61 @@ Run:
 ```
 > npm start
 ```
+
+## 4. Deploy on Lambda
+
+### API:
+
+Run (you will have to setup AWS Lambda Account & credentials):
+```http://ng-serverless.s3-website.eu-central-1.amazonaws.com/
+sreverless login
+serverless deploy
+```
+
+### Frontend:
+
+Run:
+```
+npm install serverless-finch
+```
+
+Create `serverless.yml`:
+```
+service: ng-serverless
+
+plugins:
+  - serverless-finch
+
+provider:
+  name: aws
+  region: eu-central-1
+
+custom:
+  client:
+    bucketName: ng-serverless
+    distributionFolder: ./build
+```
+
+Run:
+
+```
+npm run build
+serverless deploy
+```
+
+Navigate to: `http://ng-serverless.s3-website.eu-central-1.amazonaws.com/`
+
+## 5. Configure CloudFront
+
+Login to AWS Console:
+`https://eu-central-1.console.aws.amazon.com/console`
+
+Select `CloudFront` service.
+Create new Web distribution.
+
+In Origin Domain Name select: `ng-serverless.s3.amazonaws.com` and Create.
+In `Origin` tab create new Origin.
+In `Origin Domain Name` select your Lambda. In `Origin Path` set `/dev`.
+In `Behaviour` tab create new behaviour. In `Path Pattern` put: `/api/*` in `Origin` select you lambda Origin.
+
+Navigate to: `https://[cloudfront-hash].cloudfront.net`
