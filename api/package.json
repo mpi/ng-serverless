@@ -4,7 +4,9 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "local": "serverless offline",
+    "deploy": "serverless deploy"
   },
   "devDependencies": {
     "@types/aws-lambda": "0.0.22",

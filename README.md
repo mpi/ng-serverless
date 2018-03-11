@@ -126,3 +126,19 @@ In `Origin Domain Name` select your Lambda. In `Origin Path` set `/dev`.
 In `Behaviour` tab create new behaviour. In `Path Pattern` put: `/api/*` in `Origin` select you lambda Origin.
 
 Navigate to: `https://[cloudfront-hash].cloudfront.net`
+
+### Add usefull scripts:
+
+In `api/package.json` add:
+
+```
+  "local": "serverless offline",
+  "deploy": "serverless deploy"
+```
+
+In `web/package.json` add:
+
+```
+  "predeploy": "ng build --prod",
+  "deploy": "serverless client deploy"
+```
